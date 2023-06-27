@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="tenant" converterClass="com.mobichord.log.TenantConverter" />
+    <conversionRule conversionWord="activity_id" converterClass="com.mobichord.log.ActivityIdConverter" />
+
+    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yy/MM/dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%25.25tenant]){faint}%clr([%36.36activity_id]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="default,local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <logger name="com.spotify.docker" level="WARN"/>
+    <logger name="org.springframework.context.annotation" level="ERROR"/>
+    <logger name="org.springframework.boot.context" level="ERROR"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.eclipse.jetty" level="WARN"/>
+    <logger name="org.apache.activemq" level="WARN"/>
+    <logger name="org.mongodb.driver" level="WARN"/>
+    <logger name="application" level="INFO"/>
+
+    <logger name="org.hibernate" level="OFF"/>
+    <logger name="audit" level="OFF"/>
+    <logger name="com.rollbar.notifier" level="OFF"/>
+
+</configuration>

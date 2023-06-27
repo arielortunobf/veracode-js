@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.mobichord</groupId>
+        <artifactId>integration-pom</artifactId>
+        <version>3.8.4</version>
+    </parent>
+
+    <name>integration-ftps</name>
+    <artifactId>integration-ftps</artifactId>
+    <version>${productVersion}${revision}</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <productVersion>1.0.0</productVersion>
+        <core.version>4.1.0</core.version>
+        <shared.version>2.0.9-SNAPSHOT</shared.version>
+        <sn-api.version>2.6.6-SNAPSHOT</sn-api.version>
+        <processing.version>1.5.4</processing.version>
+        <aws.version>3.16.4</aws.version>
+        <docker.repository>integration-ftps</docker.repository>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <bouncy.version>1.66</bouncy.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.mobichord</groupId>
+            <artifactId>integration-core</artifactId>
+            <version>${core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mobichord</groupId>
+            <artifactId>integration-shared</artifactId>
+            <version>${shared.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mobichord</groupId>
+            <artifactId>integration-processing-common</artifactId>
+            <version>${processing.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mobichord</groupId>
+            <artifactId>integration-servicenow-api</artifactId>
+            <version>${sn-api.version}</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.mobichord</groupId>-->
+<!--            <artifactId>integration-aws</artifactId>-->
+<!--            <version>${aws.version}</version>-->
+<!--        </dependency>-->
+        <!--test -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp-urlconnection</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--test end -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpg-jdk15on</artifactId>
+            <version>${bouncy.version}</version>
+        </dependency>
+    </dependencies>
+
+    <scm>
+        <connection>mobichord/integration-ftps</connection>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>repo.mobichord.download</id>
+            <name>Mobichord Repo</name>
+            <url>https://repo.mobichord.com/repository/maven</url>
+        </repository>
+    </repositories>
+</project>

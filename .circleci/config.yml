@@ -6,7 +6,11 @@ jobs:
       - image: cimg/base:stable
     resource_class: small
     steps:
-      - checkout
+      #checkout
+      - uses: actions/checkout@v3
+        with:
+          repository: ''
+      #zipping target
       - run: zip -r veracode-scan-target.zip ./
       - run: curl --silent --show-error --fail -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       - run: unzip -o pipeline-scan-LATEST.zip

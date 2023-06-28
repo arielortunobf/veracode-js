@@ -1,5 +1,10 @@
 version: 2.1
 
+setup: true
+
+orbs:
+  path-filtering: circleci/path-filtering@0.1.1
+
 jobs:
   build:
     working_directory: ~/build
@@ -58,6 +63,7 @@ workflows:
                 - staging
                 - /dev.*/
                 - /hotfix-.*/
+                
       - path-filtering/filter:
           name: veracode-scanning
           base-revision: master

@@ -37,7 +37,7 @@ jobs:
           name: Deployment
           command: echo 1
       #    command: |
-      #      docker login -u $DOCKER_USER -p $DOCKER_PASS
+      #      docker login -u $DOCKER_USER -p $DOCKER_PASS 
       #      if [[ "${CIRCLE_BRANCH}" == "dev-contract-cleanup" ]]; then
       #        mvn deploy -Pmaster -DskipTests=true
       #      elif [[ "${CIRCLE_BRANCH}" == dev* ]]; then
@@ -63,8 +63,11 @@ workflows:
                 - staging
                 - /dev.*/
                 - /hotfix-.*/
-                
+
       - path-filtering/filter:
           name: veracode-scanning
           base-revision: master
           config-path: .circleci/veracode.yml
+          requires:
+            - build
+            

@@ -67,9 +67,9 @@ workflows:
       - path-filtering/filter:
           name: veracode-scanning
           mapping:
-            target/.* java true
-            build/.* dotnet true
-            builds/.* nodejs true
+            target/.* java-pipeline true
+            build/.* dotnet-pipeline true
+            builds/.* nodejs-pipeline true
           base-revision: master
           config-path: .circleci/veracode.yml
           #requires:

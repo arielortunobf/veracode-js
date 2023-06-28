@@ -1,15 +1,15 @@
 version: 2.1
 
 parameters:
-  java:
+  java-pipeline:
     type: boolean,
     default: false
   
-  dotnet:
+  dotnet-pipeline:
     type: boolean,
     default: false
 
-  nodejs:
+  nodejs-pipeline:
     type: boolean,
     default: false
 

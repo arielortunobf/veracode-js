@@ -1,5 +1,18 @@
 version: 2.1
 
+parameters:
+  java:
+    type: boolean,
+    default: false
+  
+  dotnet:
+    type: boolean,
+    default: false
+
+  nodejs:
+    type: boolean,
+    default: false
+
 jobs:
   build:
     docker:

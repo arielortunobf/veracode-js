@@ -30,12 +30,12 @@ jobs:
       - run: mkdir -p $CIRCLE_TEST_REPORTS/junit/
       - run: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
 
-      
-
+    
       #- setup_remote_docker
       
       - deploy:
           name: Deployment
+          command: echo 1
       #    command: |
       #      docker login -u $DOCKER_USER -p $DOCKER_PASS
       #      if [[ "${CIRCLE_BRANCH}" == "dev-contract-cleanup" ]]; then

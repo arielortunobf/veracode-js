@@ -1,123 +1,15 @@
-# ExampleCircleCI pipeline that builds and scans a project using Veracodes Agent Based Scanner, Policy and Pipeline Scans.
 version: 2.1
 
-jobs:
-  build:
-    docker:
-      # The primary container is an instance of the first image listed. The job's commands run in this container.
-      - image: maven:3.6.3-openjdk-8
-    working_directory: ~/target
-    resource_class : small
-    steps:
-      - checkout
-      # Install and run Maven
-      #- run:
-      #    name: Install Maven
-      #    command: 'yum -y install maven'
-      - run:
-          name: Run Maven
-          command: 'mvn compile package'
-      # keep the files around for the scan job
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - target
-            - ./
-  # job to upload to Veracode for scanning
-  veracode_scan:
+setup: true
 
-    # use a java-based image to run the Veracode API wrapper
-    docker:
-      - image: signiant/docker-jenkins-centos7-java8:latest
-    resource_class : small
-      
-    #working_directory: ~/target
-    
-    steps:
-      # get the files from the previous job
-      - attach_workspace:
-          at: ./
-          
-      # grab the Veracode agent
-      - run:
-          name: "Get the Veracode agent"
-          command: |
-            wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -O veracode-wrapper.jar
-            #chmod 755 veracode-wrapper.jar
+orbs:
+  path-filtering: circleci/path-filtering@0.1.1
 
-      # upload for scanning
-      # env vars are used to pass login creds and set the scan name
-      - run:
-          name: "Upload to Veracode"
-          command: java -jar veracode-wrapper.jar 
-              -vid $VERACODE_API_ID
-              -vkey $VERACODE_API_KEY
-              -action uploadandscan 
-              -appname "Verademo_circleci"
-              -createprofile true 
-              -version CircleCI-$CIRCLE_BUILD_NUM 
-              -filepath ./target/verademo.war
- 
- # job to upload to Veracode for Agent Based SCA scanning
-  abs_scan:
-    docker:
-      # specify the version you desire here
-      #- image: signiant/docker-jenkins-centos7-java8:latest
-      - image: maven:3.6.3-openjdk-8
-    resource_class : small
-
-    #working_directory: ~/repo
-
-    steps:
-      # get the files from the previous job
-      - attach_workspace:
-          at: ./
-      # Install Maven
-      #- run:
-      #    name: Install Maven
-      #    command: 'yum -y install maven'      
-
-      # download and run SourceClear scanner
-      - run:
-          name: "Veracode Agent Based Scan"
-          command: |
-            curl -sSL https://download.sourceclear.com/ci.sh | bash
-
- # job to perform a Veracode Pipeline Scan
-  pipeline_scan:
-    docker: 
-      - image: signiant/docker-jenkins-centos7-java8:latest
-    
-    steps:
-      # get the files from the previous job
-      - attach_workspace:
-          at: ./
-      # Downlowad the scanner
-      - run:
-          name: "Download Veracode Pipeline Scan"
-          command: |
-           curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-      - run:
-          name: "Unzip Veracode Pipeline Scan"
-          command: |
-           unzip pipeline-scan-LATEST.zip
-      - run:
-          name: "Run Veracode Pipeline Scan  and create a baseline"
-          command: |
-            java -jar pipeline-scan.jar -vid $VERACODE_API_ID -vkey $VERACODE_API_KEY -f ./target/verademo.war --json_output_file="baseline.json" || true
-
-# serial jobs - need to run 'build' before 'scan'
 workflows:
-  version: 2.1
-  build_and_scan:
+  always-run:
     jobs:
-      - build
-      - pipeline_scan:
-          requires:
-            - build
-      - veracode_scan:
-          requires:
-            - build
-      - abs_scan:
-          requires:
-            - build
+      - path-filtering/filter:
+          name: veracode-scanning
+          base-revision: main
+          config-path: .circleci/veracode.yml
+

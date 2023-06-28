@@ -38,8 +38,8 @@ jobs:
 
       #- setup_remote_docker
       
-      #- deploy:
-      #    name: Deployment
+      - deploy:
+          name: Deployment
       #    command: |
       #      docker login -u $DOCKER_USER -p $DOCKER_PASS
       #      if [[ "${CIRCLE_BRANCH}" == "dev-contract-cleanup" ]]; then

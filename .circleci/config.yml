@@ -5,11 +5,65 @@ setup: true
 orbs:
   path-filtering: circleci/path-filtering@0.1.1
 
-workflows:
-  always-run:
-    jobs:
+jobs:
+  build:
+    working_directory: ~/build
+    docker:
+      - image: $BUILD_BOX_JAVA_IMAGE
+      - image: $MONGO_IMAGE
+      - image: mobichord/artemis:2.20.0
+    steps:
+      - checkout
+      - run:
+          name: Dependencies
+          command: |
+            curl -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3.raw" -O -L https://api.github.com/repos/Appchord/Infrastructure/contents/utils/aws/ecs/aws-service-restart-v2.py
+            curl -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3.raw" -O -L https://api.github.com/repos/Appchord/Infrastructure/contents/maven/settings.xml
+            chmod +x aws-service-restart-v2.py
+            mkdir ~/.m2/
+            cp settings.xml ~/.m2/
+            mvn dependency:resolve-plugins
+      - run:
+          name: Test
+          command: mvn -U test
+
+      - run: mkdir -p $CIRCLE_TEST_REPORTS/junit/
+      - run: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
+      
       - path-filtering/filter:
           name: veracode-scanning
           base-revision: master
           config-path: .circleci/veracode.yml
 
+      #- setup_remote_docker
+      
+      #- deploy:
+      #    name: Deployment
+      #    command: |
+      #      docker login -u $DOCKER_USER -p $DOCKER_PASS
+      #      if [[ "${CIRCLE_BRANCH}" == "dev-contract-cleanup" ]]; then
+      #        mvn deploy -Pmaster -DskipTests=true
+      #      elif [[ "${CIRCLE_BRANCH}" == dev* ]]; then
+      #        mvn deploy -Pdev -DskipTests=true
+      #      elif [[ "${CIRCLE_BRANCH}" == "staging" ]]; then
+      #        mvn deploy -Pstaging -DskipTests=true
+      #      elif [[ "${CIRCLE_BRANCH}" == "master" ]]; then
+      #        mvn deploy -Pmaster -DskipTests=true
+      #      fi
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build:
+          context:
+            - aws-ecs
+            - build-images
+          filters:
+            branches:
+              only:
+                - master
+                - staging
+                - /dev.*/
+                - /hotfix-.*/

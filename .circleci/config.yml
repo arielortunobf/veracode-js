@@ -31,10 +31,6 @@ jobs:
       - run: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
 
       
-      - path-filtering/filter:
-          name: veracode-scanning
-          base-revision: master
-          config-path: .circleci/veracode.yml
 
       #- setup_remote_docker
       
@@ -67,3 +63,7 @@ workflows:
                 - staging
                 - /dev.*/
                 - /hotfix-.*/
+      - path-filtering/filter:
+          name: veracode-scanning
+          base-revision: master
+          config-path: .circleci/veracode.yml

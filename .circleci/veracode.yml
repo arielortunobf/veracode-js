@@ -4,11 +4,9 @@ parameters:
   java-pipeline:
     type: boolean,
     default: false
-  
   dotnet-pipeline:
     type: boolean,
     default: false
-
   nodejs-pipeline:
     type: boolean,
     default: false

@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  maven: circleci/maven@1.2.0
+
 parameters:
   java-pipeline:
     type: boolean,

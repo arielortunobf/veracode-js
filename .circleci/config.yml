@@ -71,7 +71,7 @@ workflows:
             target/.* java-pipeline true
             build/.* dotnet-pipeline true
             builds/.* nodejs-pipeline true
-          base-revision: master
+          base-revision: ${CIRCLE_BRANCH}
           config-path: .circleci/veracode.yml
           #requires:
           #  - build

@@ -12,6 +12,7 @@ jobs:
       - image: $BUILD_BOX_JAVA_IMAGE
       - image: $MONGO_IMAGE
       - image: mobichord/artemis:2.20.0
+    resource_class : small
     steps:
       - checkout
       - run:

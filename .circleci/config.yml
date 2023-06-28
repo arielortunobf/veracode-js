@@ -10,6 +10,6 @@ workflows:
     jobs:
       - path-filtering/filter:
           name: veracode-scanning
-          base-revision: main
+          base-revision: master
           config-path: .circleci/veracode.yml
 

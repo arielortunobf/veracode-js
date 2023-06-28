@@ -72,6 +72,6 @@ workflows:
             builds/.* nodejs true
           base-revision: master
           config-path: .circleci/veracode.yml
-          requires:
-            - build
+          #requires:
+          #  - build
             

@@ -68,11 +68,11 @@ jobs:
     steps:
       # get the files from the previous job
       - attach_workspace:
-        at: ./
+          at: ./
       # Install Maven
       - run:
-        name: Install Maven
-        command: 'yum -y install maven'      
+          name: Install Maven
+          command: 'yum -y install maven'      
 
       # download and run SourceClear scanner
       - run:

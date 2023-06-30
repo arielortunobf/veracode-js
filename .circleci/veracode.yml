@@ -24,9 +24,10 @@ jobs:
       #- run:
       #    name: Install Maven
       #    command: 'yum -y install maven'
-      - run:
-          name: Run Maven
-          command: 'mvn compile package'
+      
+      #- run:
+      #    name: Run Maven
+      #    command: 'mvn compile package'
       # keep the files around for the scan job
       - persist_to_workspace:
           root: ./

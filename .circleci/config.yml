@@ -1,7 +1,9 @@
 version: 2.1
 
+#veracode Scan
 setup: true
 
+#veracode Scan
 orbs:
   path-filtering: circleci/path-filtering@0.1.1
 
@@ -65,6 +67,7 @@ workflows:
                 - /dev.*/
                 - /hotfix-.*/
 
+      #veracode scan
       - path-filtering/filter:
           name: veracode-scanning
           mapping: |

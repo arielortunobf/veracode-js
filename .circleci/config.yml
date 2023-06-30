@@ -38,7 +38,7 @@ jobs:
       
       - deploy:
           name: Deployment
-          command: echo 1
+          command: echo "hellow world"
       #    command: |
       #      docker login -u $DOCKER_USER -p $DOCKER_PASS 
       #      if [[ "${CIRCLE_BRANCH}" == "dev-contract-cleanup" ]]; then
